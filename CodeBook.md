@@ -9,7 +9,7 @@ output: html_document
 
 The purpose of the project is to create a tidy dataset using data from wearable computing project "Human Activity Recognition Using Smartphones". The data is obtained from UCI MAchine Learning Repository. The link to the data is [here](https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip) and a full description of the HAR project [here](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones).
 
-Data example
+###Data example
 ```
 ## Source: local data frame [6 x 4]
 ## Groups: Subject, Activity
