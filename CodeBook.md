@@ -136,29 +136,9 @@ prefix 'f' in the variable name indicate frequency domain signals).
 
 ###Transformations in "run_analysis.R" script explained.
 First step was to load the txt files from zipped archive and merge them:
-Train data:  
-X_train.txt  
-y_train.txt  
-subject_train.txt
-```
-trainDataX<-read.table(unz("getdata_projectfiles_UCI_HAR_Dataset.zip","UCI HAR Dataset/train/X_train.txt"))
-trainDataY<-read.table(unz("getdata_projectfiles_UCI_HAR_Dataset.zip","UCI HAR Dataset/train/y_train.txt"))
-trainDataSubject<-read.table(unz("getdata_projectfiles_UCI_HAR_Dataset.zip","UCI HAR Dataset/train/subject_train.txt"))
-```
+(For more information look into README.md)
 
-Merging subject number with activity(Y) and features(X) by column 
-```
-trainData<-cbind(trainDataSubject,trainDataY,trainDataX)
-```
-
-The same procedure was used to load and merge test data. (As can be seen in "run_analysis.R"" script). "testData" dat.frame was created.
-
-Merging train and test data by row
-```
-allData<-rbind(trainData,testData)
-```
-
-I have obtained an unlabelled data set. (example of first 5 columns)
+After merging train and test data by row, I have obtained an unlabelled data set. (example of first 5 columns)
 
 ```r
 head(allData[,1:5])
@@ -188,28 +168,8 @@ ncol(allData) #number of columns
 ```
 
 Feature labels were taken from the "features.txt"" file and applied to the data.frame.
-
-```
-#loading features labels
-features<-read.table(unz("getdata_projectfiles_UCI_HAR_Dataset.zip","UCI HAR Dataset/features.txt"))
-
-#Add lables to the data frame
-nFeatures<-nrow(features)
-featuresVec <- as.character(features[,2])
-featuresVec<-c("Subject","Activity",featuresVec)
-names(allData)<-featuresVec
-```
-
 Activity names were added from "activity_labels.txt" file
-```
-#loading activity labels
-activityLabels<-read.table(unz("getdata_projectfiles_UCI_HAR_Dataset.zip","UCI HAR Dataset/activity_labels.txt"))
-
-#add activity names
-allData$Activity <- as.factor(allData$Activity)
-levels(allData$Activity)<-as.character(activityLabels$V2)
-rm(activityLabels)
-```
+(for more details please look into README.md)
 
 In the next step I have extracted only the columns that correspond to mean and standard deviation of the measurements. "Subject" and "Activity" were also included.
 ```
@@ -271,4 +231,18 @@ library(dplyr)
 groupData<-group_by(newDataMelt,Subject,Activity,variable)
 summarizedData<-summarize(groupData,variableMean=mean(value))
 head(summarizedData)
+```
+
+Resulting data
+```
+## Source: local data frame [6 x 4]
+## Groups: Subject, Activity
+## 
+##   Subject Activity          variable variableMean
+## 1       1  WALKING tBodyAcc-mean()-X   0.27733076
+## 2       1  WALKING tBodyAcc-mean()-Y  -0.01738382
+## 3       1  WALKING tBodyAcc-mean()-Z  -0.11114810
+## 4       1  WALKING  tBodyAcc-std()-X  -0.28374026
+## 5       1  WALKING  tBodyAcc-std()-Y   0.11446134
+## 6       1  WALKING  tBodyAcc-std()-Z  -0.26002790
 ```
