@@ -4,6 +4,7 @@ author: "Marozet"
 date: "Thursday, January 22, 2015"
 output: html_document
 ---
+##CodeBook for Getting and Cleaning Data Project
 
 ###Data file name: GetDataHARProjectTidyDataSet.txt
 
