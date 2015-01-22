@@ -193,7 +193,7 @@ Levels:
 6 - LAYING  
 
 ####variable
-description: Name of the variable for measurement.
+description: Name of the variable for measurement.  
 type: Factor with 66 levels  
 Levels:  
 1   - tBodyAcc-mean()-X            
