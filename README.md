@@ -6,7 +6,7 @@ date: "Thursday, January 22, 2015"
 
 The purpose of the project is to create a tidy dataset using data from wearable computing project "Human Activity Recognition Using Smartphones". The data is obtained from UCI MAchine Learning Repository. The link to the data is [here](https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip) and a full description of the HAR project [here](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones).
 
-Let's download the file:
+The original data file was downloaded using the following code.
 
 ```r
 download.file("http://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip",destfile="getdata_projectfiles_UCI_HAR_Dataset.zip",mode="wb")
@@ -17,13 +17,13 @@ date() #Exact date the file was downloaded.
 ## [1] "Thu Jan 22 13:03:23 2015"
 ```
 
-Now, let's run the "run_analysis.R" script, which will load the data and reshape them into tidy data set.  
-The script performs the following steps:  
-1. Merges the training and the test sets to create one data set.  
-2. Extracts only the measurements on the mean and standard deviation for each measurement.   
-3. Uses descriptive activity names to name the activities in the data set  
-4. Appropriately labels the data set with descriptive variable names (saves step 4 file into "newHARData.csv" file).   
-5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.  
+Next the "run_analysis.R" script was run, which loaded the data and reshaped it into a tidy data set.  
+The script performed the following steps:  
+1. Merged the training and the test sets to create one data set.  
+2. Extracted only the measurements on the mean and standard deviation for each measurement.   
+3. Added descriptive activity names to name the activities in the data set  
+4. Labeled the data set with descriptive variable names (saves step 4 file into "newHARData.csv" file).   
+5. From the data set in step 4, created a second, independent tidy data set with the average of each variable for each activity and each subject.  
 
 ```r
 source("run_analysis.R")
