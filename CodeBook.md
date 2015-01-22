@@ -194,8 +194,8 @@ Levels:
 
 ####variable
 description: Name of the variable for measurement.
-type: Factor with 66 levels
-Levels:
+type: Factor with 66 levels  
+Levels:  
 1   - tBodyAcc-mean()-X            
 2    - tBodyAcc-mean()-Y            
 3	- tBodyAcc-mean()-Z            
@@ -264,10 +264,10 @@ Levels:
 66	- fBodyBodyGyroJerkMag-std() 
 
 ####variableMean
-description: Calculated average of the variable for each activity and each subject
+description: Calculated average of the variable for each activity and each subject  
 type: Numeric
 
 ###Note on variable units
-prefix 't' in the variable name denotes time
+prefix 't' in the variable name denotes time  
 prefix 'f' in the variable name indicate frequency domain signals). 
 
