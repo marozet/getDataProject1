@@ -1,0 +1,215 @@
+---
+title: "CodeBook for Getting and Cleaning Data Project"
+author: "Marozet"
+date: "Thursday, January 22, 2015"
+output: html_document
+---
+
+###Data file name: GetDataHARProjectTidyDataSet.txt
+
+The purpose of the project is to create a tidy dataset using data from wearable computing project "Human Activity Recognition Using Smartphones". The data is obtained from UCI MAchine Learning Repository. The link to the data is [here](https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip) and a full description of the HAR project [here](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones).
+
+```{r, label=download, cache=TRUE, echo=FALSE, results="hide"}
+download.file("http://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip",destfile="getdata_projectfiles_UCI_HAR_Dataset.zip",mode="wb")
+date() #Exact date the file was downloaded.
+```
+ 
+```{r, label=run_analysis, cache=FALSE, results="hide",echo=FALSE}
+source("run_analysis.R")
+```
+
+###Transformations in "run_analysis.R" script explained.
+First step was to load the txt files from zipped archive and merge them:
+Train data:  
+X_train.txt  
+y_train.txt  
+subject_train.txt
+```
+trainDataX<-read.table(unz("getdata_projectfiles_UCI_HAR_Dataset.zip","UCI HAR Dataset/train/X_train.txt"))
+trainDataY<-read.table(unz("getdata_projectfiles_UCI_HAR_Dataset.zip","UCI HAR Dataset/train/y_train.txt"))
+trainDataSubject<-read.table(unz("getdata_projectfiles_UCI_HAR_Dataset.zip","UCI HAR Dataset/train/subject_train.txt"))
+```
+
+Merging subject number with activity(Y) and features(X) by column 
+```
+trainData<-cbind(trainDataSubject,trainDataY,trainDataX)
+```
+
+The same procedure was used to load and merge test data. (As can be seen in "run_analysis.R"" script). "testData" dat.frame was created.
+
+Merging train and test data by row
+```
+allData<-rbind(trainData,testData)
+```
+
+I have obtained an unlabelled data set. (example of first 5 columns)
+``` {r}
+head(allData[,1:5])
+nrow(allData) #number of rows
+ncol(allData) #number of columns
+```
+
+Feature labels were taken from the "features.txt"" file and applied to the data.frame.
+
+```
+#loading features labels
+features<-read.table(unz("getdata_projectfiles_UCI_HAR_Dataset.zip","UCI HAR Dataset/features.txt"))
+
+#Add lables to the data frame
+nFeatures<-nrow(features)
+featuresVec <- as.character(features[,2])
+featuresVec<-c("Subject","Activity",featuresVec)
+names(allData)<-featuresVec
+```
+
+Activity names were added from "activity_labels.txt" file
+```
+#loading activity labels
+activityLabels<-read.table(unz("getdata_projectfiles_UCI_HAR_Dataset.zip","UCI HAR Dataset/activity_labels.txt"))
+
+#add activity names
+allData$Activity <- as.factor(allData$Activity)
+levels(allData$Activity)<-as.character(activityLabels$V2)
+rm(activityLabels)
+```
+
+In the next step I have extracted only the columns that correspond to mean and standard deviation of the measurements. "Subject" and "Activity" were also included.
+```
+newData <- allData[,grepl("Subject|Activity|mean\\(|std",names(allData))]
+```
+
+I have obtained the following data structure. (The below example only shows first 5 out of 68 columns of the data. "Subject", "Activity", and 66 columns with extracted measurements)
+```{r}
+head(newData[,1:5])
+nrow(newData) #number of rows
+ncol(newData) #number of columns
+```
+
+Data was restructured into "newDataMelt". All values were copied into one column "value" and the corresponding variable name is in column "variable"
+```
+library(reshape2)
+newDataMelt<-melt(newData,id=c("Subject","Activity"),measure.vars=names(newData[,3:(ncol(newData))]))
+```
+```{r}
+head(newDataMelt)
+```
+
+New data was then grouped by Subject and Activity, and summarized using mean function.
+```{r}
+library(dplyr)
+
+#create a long form tidy data set
+groupData<-group_by(newDataMelt,Subject,Activity,variable)
+summarizedData<-summarize(groupData,variableMean=mean(value))
+head(summarizedData)
+```
+
+
+
+##Data description
+The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
+
+The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain.
+
+This data set presents only Mean and Standard Deviation for each measurement.
+
+ 
+    
+
+##Columns
+
+####Subject
+description: Subject number, meaning the number of the volunteer within an age bracket of 19-48 years
+type: integer
+range: 1:30
+
+####Activity
+description: Performed activity name  
+type: Factor with 6 levels  
+Levels:  
+1 - WALKING  
+2 - WALKING_UPSTAIRS  
+3 - WALKING_DOWNSTAIRS  
+4 - SITTING  
+5 - STANDING  
+6 - LAYING  
+
+####variable
+description: Name of the variable for measurement.
+type: Factor with 66 levels
+Levels:
+1   - tBodyAcc-mean()-X            
+2    - tBodyAcc-mean()-Y            
+3	- tBodyAcc-mean()-Z            
+4	- tBodyAcc-std()-X             
+5	- tBodyAcc-std()-Y             
+6	- tBodyAcc-std()-Z             
+7	- tGravityAcc-mean()-X         
+8	- tGravityAcc-mean()-Y         
+9	- tGravityAcc-mean()-Z         
+10	- tGravityAcc-std()-X          
+11	- tGravityAcc-std()-Y          
+12	- tGravityAcc-std()-Z          
+13	- tBodyAccJerk-mean()-X        
+14	- tBodyAccJerk-mean()-Y        
+15	- tBodyAccJerk-mean()-Z        
+16	- tBodyAccJerk-std()-X         
+17	- tBodyAccJerk-std()-Y         
+18	- tBodyAccJerk-std()-Z         
+19	- tBodyGyro-mean()-X           
+20	- tBodyGyro-mean()-Y           
+21	- tBodyGyro-mean()-Z           
+22	- tBodyGyro-std()-X            
+23	- tBodyGyro-std()-Y            
+24	- tBodyGyro-std()-Z            
+25	- tBodyGyroJerk-mean()-X       
+26	- tBodyGyroJerk-mean()-Y       
+27	- tBodyGyroJerk-mean()-Z       
+28	- tBodyGyroJerk-std()-X        
+29	- tBodyGyroJerk-std()-Y        
+30	- tBodyGyroJerk-std()-Z        
+31	- tBodyAccMag-mean()           
+32	- tBodyAccMag-std()            
+33	- tGravityAccMag-mean()        
+34	- tGravityAccMag-std()         
+35	- tBodyAccJerkMag-mean()       
+36	- tBodyAccJerkMag-std()        
+37	- tBodyGyroMag-mean()          
+38	- tBodyGyroMag-std()           
+39	- tBodyGyroJerkMag-mean()      
+40	- tBodyGyroJerkMag-std()       
+41	- fBodyAcc-mean()-X            
+42	- fBodyAcc-mean()-Y            
+43	- fBodyAcc-mean()-Z            
+44	- fBodyAcc-std()-X             
+45	- fBodyAcc-std()-Y             
+46	- fBodyAcc-std()-Z             
+47	- fBodyAccJerk-mean()-X        
+48	- fBodyAccJerk-mean()-Y        
+49	- fBodyAccJerk-mean()-Z        
+50	- fBodyAccJerk-std()-X         
+51	- fBodyAccJerk-std()-Y         
+52	- fBodyAccJerk-std()-Z         
+53	- fBodyGyro-mean()-X           
+54	- fBodyGyro-mean()-Y           
+55	- fBodyGyro-mean()-Z           
+56	- fBodyGyro-std()-X            
+57	- fBodyGyro-std()-Y            
+58	- fBodyGyro-std()-Z            
+59	- fBodyAccMag-mean()           
+60	- fBodyAccMag-std()            
+61	- fBodyBodyAccJerkMag-mean()   
+62	- fBodyBodyAccJerkMag-std()    
+63	- fBodyBodyGyroMag-mean()      
+64	- fBodyBodyGyroMag-std()       
+65	- fBodyBodyGyroJerkMag-mean()  
+66	- fBodyBodyGyroJerkMag-std() 
+
+####variableMean
+description: Calculated average of the variable for each activity and each subject
+type: Numeric
+
+###Note on variable units
+prefix 't' in the variable name denotes time
+prefix 'f' in the variable name indicate frequency domain signals). 
+
