@@ -11,6 +11,8 @@ The resulting long form tidy data set:  "[GetDataHARProjectTidyDataSet.txt](http
 
 The Code Book can be found [here](https://github.com/marozet/getDataProject1/blob/master/CodeBook.md):
 
+
+##Data processing
 The original data file was downloaded using the following code.
 
 ```r
