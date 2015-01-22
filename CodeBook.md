@@ -41,7 +41,7 @@ head(allData[,1:5])
 ```
 
 ```
-##   Subject Activity tBodyAcc-mean()-X tBodyAcc-mean()-Y tBodyAcc-mean()-Z
+##        V1       V2                V3                V4                V5
 ## 1       1 STANDING         0.2885845       -0.02029417        -0.1329051
 ## 2       1 STANDING         0.2784188       -0.01641057        -0.1235202
 ## 3       1 STANDING         0.2796531       -0.01946716        -0.1134617
@@ -53,15 +53,12 @@ head(allData[,1:5])
 ```r
 nrow(allData) #number of rows
 ```
-
 ```
 ## [1] 10299
 ```
-
 ```r
 ncol(allData) #number of columns
 ```
-
 ```
 ## [1] 563
 ```
@@ -100,7 +97,6 @@ I have obtained the following data structure. (The below example only shows firs
 ```r
 head(newData[,1:5])
 ```
-
 ```
 ##   Subject Activity tBodyAcc-mean()-X tBodyAcc-mean()-Y tBodyAcc-mean()-Z
 ## 1       1 STANDING         0.2885845       -0.02029417        -0.1329051
@@ -114,15 +110,12 @@ head(newData[,1:5])
 ```r
 nrow(newData) #number of rows
 ```
-
 ```
 ## [1] 10299
 ```
-
 ```r
 ncol(newData) #number of columns
 ```
-
 ```
 ## [1] 68
 ```
@@ -132,11 +125,9 @@ Data was restructured into "newDataMelt". All values were copied into one column
 library(reshape2)
 newDataMelt<-melt(newData,id=c("Subject","Activity"),measure.vars=names(newData[,3:(ncol(newData))]))
 ```
-
 ```r
 head(newDataMelt)
 ```
-
 ```
 ##   Subject Activity          variable     value
 ## 1       1 STANDING tBodyAcc-mean()-X 0.2885845
