@@ -3,8 +3,13 @@
 author: "Marozet"  
 date: "Thursday, January 22, 2015"
 ```
-
+##Introduction
 The purpose of the project is to create a tidy dataset using data from wearable computing project "Human Activity Recognition Using Smartphones". The data is obtained from UCI MAchine Learning Repository. The link to the data is [here](https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip) and a full description of the HAR project [here](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones).
+
+###Quick link to results:
+The resulting long form tidy data set:  "[GetDataHARProjectTidyDataSet.txt](https://github.com/marozet/getDataProject1/blob/master/GetDataHARProjectTidyDataSet.txt)".
+
+The Code Book can be found [here](https://github.com/marozet/getDataProject1/blob/master/CodeBook.md):
 
 The original data file was downloaded using the following code.
 
@@ -42,7 +47,9 @@ str(summarizedData) #show the structure of the new tidy data set.
 ##  - attr(*, "drop")= logi TRUE
 ```
 
-The resulting long form tidy data set is saved to "GetDataHARProjectTidyDataSet.txt".
+The resulting long form tidy data set is saved to "[GetDataHARProjectTidyDataSet.txt](https://github.com/marozet/getDataProject1/blob/master/GetDataHARProjectTidyDataSet.txt)".
+
+The Code Book can be found [here](https://github.com/marozet/getDataProject1/blob/master/CodeBook.md):
 
 ###Transformations in "run_analysis.R" script explained.
 First step was to load the txt files from zipped archive and merge them:
