@@ -1,5 +1,7 @@
+#title: "Getting and Cleaning Data Project based on "Human Activity Recognition Using Smartphones" data.
+
 ---
-title: "CodeBook for Getting and Cleaning Data Project"
+title: "Getting and Cleaning Data Project based on "Human Activity Recognition Using Smartphones" data.
 author: "Marozet"
 date: "Thursday, January 22, 2015"
 output: html_document
