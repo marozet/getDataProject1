@@ -1,4 +1,4 @@
-#title: "Getting and Cleaning Data Project based on "Human Activity Recognition Using Smartphones" data.
+#Getting and Cleaning Data Project based on "Human Activity Recognition Using Smartphones" data.
 
 ---
 title: "Getting and Cleaning Data Project based on "Human Activity Recognition Using Smartphones" data.
